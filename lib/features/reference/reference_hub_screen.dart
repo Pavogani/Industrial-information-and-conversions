@@ -68,6 +68,36 @@ class ReferenceHubScreen extends StatelessWidget {
             subtitle: 'Number/letter drills, UNC, UNF, metric taps',
             onTap: () => context.push('/reference/drill-tap'),
           ),
+          _ReferenceTile(
+            icon: Icons.architecture,
+            title: 'Weld Symbol Decoder',
+            subtitle: 'Decode welding symbols from blueprints',
+            onTap: () => context.push('/reference/weld-symbols'),
+          ),
+          _ReferenceTile(
+            icon: Icons.electric_bolt,
+            title: 'Motor Nameplate Decoder',
+            subtitle: 'Decode motor nameplate information',
+            onTap: () => context.push('/reference/motor-nameplate'),
+          ),
+          _ReferenceTile(
+            icon: Icons.circle_outlined,
+            title: 'Bearing Number Decoder',
+            subtitle: 'Decode bearing part numbers and suffixes',
+            onTap: () => context.push('/reference/bearing-decoder'),
+          ),
+          _ReferenceTile(
+            icon: Icons.sync,
+            title: 'Coupling Tolerances',
+            subtitle: 'Alignment tolerances by coupling type',
+            onTap: () => context.push('/reference/coupling-tolerances'),
+          ),
+          _ReferenceTile(
+            icon: Icons.pan_tool,
+            title: 'Crane Hand Signals',
+            subtitle: 'Standard OSHA crane signals',
+            onTap: () => context.push('/reference/crane-signals'),
+          ),
         ],
       ),
     );

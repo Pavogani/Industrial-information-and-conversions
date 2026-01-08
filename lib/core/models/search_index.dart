@@ -160,6 +160,30 @@ const List<SearchItem> searchIndex = [
     keywords: ['surface', 'area', 'cube', 'cylinder', 'sphere', 'cone', 'pipe', 'square', 'rectangle', 'prism', 'paint', 'coating'],
     icon: 'square_foot',
   ),
+  SearchItem(
+    title: 'Electrical / Ohm\'s Law',
+    description: 'Voltage, current, resistance, motor amps',
+    route: '/calculators/electrical',
+    category: 'Calculators',
+    keywords: ['electrical', 'ohm', 'voltage', 'current', 'amps', 'resistance', 'watts', 'power', 'motor', 'fla'],
+    icon: 'electric_bolt',
+  ),
+  SearchItem(
+    title: 'Wire Sizing Calculator',
+    description: 'AWG selection, ampacity, voltage drop',
+    route: '/calculators/wire-sizing',
+    category: 'Calculators',
+    keywords: ['wire', 'awg', 'gauge', 'ampacity', 'voltage', 'drop', 'copper', 'aluminum', 'nec'],
+    icon: 'cable',
+  ),
+  SearchItem(
+    title: 'Pneumatic Calculator',
+    description: 'CFM, pipe sizing, cylinder force',
+    route: '/calculators/pneumatic',
+    category: 'Calculators',
+    keywords: ['pneumatic', 'air', 'cfm', 'cylinder', 'force', 'pressure', 'psi', 'pipe', 'compressor'],
+    icon: 'air',
+  ),
 
   // Reference
   SearchItem(
@@ -233,6 +257,46 @@ const List<SearchItem> searchIndex = [
     category: 'Reference',
     keywords: ['drill', 'tap', 'thread', 'unc', 'unf', 'metric', 'clearance', 'hole'],
     icon: 'construction',
+  ),
+  SearchItem(
+    title: 'Weld Symbol Decoder',
+    description: 'Decode welding symbols from blueprints',
+    route: '/reference/weld-symbols',
+    category: 'Reference',
+    keywords: ['weld', 'symbol', 'blueprint', 'fillet', 'groove', 'bevel', 'butt', 'joint', 'aws'],
+    icon: 'architecture',
+  ),
+  SearchItem(
+    title: 'Motor Nameplate Decoder',
+    description: 'Decode motor nameplate information',
+    route: '/reference/motor-nameplate',
+    category: 'Reference',
+    keywords: ['motor', 'nameplate', 'nema', 'frame', 'enclosure', 'tefc', 'odp', 'voltage', 'amps', 'hp'],
+    icon: 'electric_bolt',
+  ),
+  SearchItem(
+    title: 'Bearing Number Decoder',
+    description: 'Decode bearing part numbers and suffixes',
+    route: '/reference/bearing-decoder',
+    category: 'Reference',
+    keywords: ['bearing', 'number', 'decoder', 'skf', '6205', 'seal', 'shield', 'clearance', 'suffix'],
+    icon: 'circle_outlined',
+  ),
+  SearchItem(
+    title: 'Coupling Tolerances',
+    description: 'Alignment tolerances by coupling type',
+    route: '/reference/coupling-tolerances',
+    category: 'Reference',
+    keywords: ['coupling', 'alignment', 'tolerance', 'parallel', 'angular', 'offset', 'misalignment'],
+    icon: 'sync',
+  ),
+  SearchItem(
+    title: 'Crane Hand Signals',
+    description: 'Standard OSHA crane signals',
+    route: '/reference/crane-signals',
+    category: 'Reference',
+    keywords: ['crane', 'signal', 'hand', 'hoist', 'boom', 'swing', 'osha', 'rigging'],
+    icon: 'pan_tool',
   ),
 
   // Welding
@@ -325,6 +389,40 @@ const List<SearchItem> searchIndex = [
     category: 'Rigging',
     keywords: ['load', 'rigging', 'angle', 'tension', 'lift', 'crane', 'hoist', 'sling'],
     icon: 'calculate',
+  ),
+
+  // Safety
+  SearchItem(
+    title: 'Safety Checklists',
+    description: 'LOTO, Hot Work, Confined Space procedures',
+    route: '/safety',
+    category: 'Safety',
+    keywords: ['safety', 'checklist', 'loto', 'lockout', 'tagout', 'hot work', 'confined space', 'permit'],
+    icon: 'health_and_safety',
+  ),
+  SearchItem(
+    title: 'LOTO Checklist',
+    description: 'Lockout/Tagout procedure checklist',
+    route: '/safety/loto',
+    category: 'Safety',
+    keywords: ['loto', 'lockout', 'tagout', 'energy', 'isolation', 'hazardous', 'control', 'osha'],
+    icon: 'lock',
+  ),
+  SearchItem(
+    title: 'Hot Work Permit',
+    description: 'Welding and cutting safety checklist',
+    route: '/safety/hot-work',
+    category: 'Safety',
+    keywords: ['hot work', 'permit', 'welding', 'cutting', 'fire', 'watch', 'combustible', 'spark'],
+    icon: 'local_fire_department',
+  ),
+  SearchItem(
+    title: 'Confined Space Entry',
+    description: 'Confined space entry safety checklist',
+    route: '/safety/confined-space',
+    category: 'Safety',
+    keywords: ['confined space', 'entry', 'permit', 'atmospheric', 'oxygen', 'ventilation', 'rescue', 'attendant'],
+    icon: 'warning',
   ),
 ];
 

@@ -98,6 +98,24 @@ class CalculatorsHubScreen extends StatelessWidget {
             subtitle: 'Cube, cylinder, sphere, cone, pipe',
             onTap: () => context.push('/calculators/surface-area'),
           ),
+          _CalculatorTile(
+            icon: Icons.electric_bolt,
+            title: 'Electrical / Ohm\'s Law',
+            subtitle: 'Voltage, current, resistance, motor amps',
+            onTap: () => context.push('/calculators/electrical'),
+          ),
+          _CalculatorTile(
+            icon: Icons.cable,
+            title: 'Wire Sizing',
+            subtitle: 'AWG selection, ampacity, voltage drop',
+            onTap: () => context.push('/calculators/wire-sizing'),
+          ),
+          _CalculatorTile(
+            icon: Icons.air,
+            title: 'Pneumatic',
+            subtitle: 'CFM, pipe sizing, cylinder force',
+            onTap: () => context.push('/calculators/pneumatic'),
+          ),
         ],
       ),
     );

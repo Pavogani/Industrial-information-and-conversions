@@ -18,6 +18,9 @@ import '../../features/calculators/thermal_expansion_calculator.dart';
 import '../../features/calculators/conveyor_calculator.dart';
 import '../../features/calculators/pump_flow_calculator.dart';
 import '../../features/calculators/surface_area_calculator.dart';
+import '../../features/calculators/electrical_calculator.dart';
+import '../../features/calculators/wire_sizing_calculator.dart';
+import '../../features/calculators/pneumatic_calculator.dart';
 import '../../features/reference/reference_hub_screen.dart';
 import '../../features/reference/fraction_reference_screen.dart';
 import '../../features/reference/torque_spec_screen.dart';
@@ -28,6 +31,11 @@ import '../../features/reference/lubricant_screen.dart';
 import '../../features/reference/hardness_screen.dart';
 import '../../features/reference/wire_screen.dart';
 import '../../features/reference/drill_tap_screen.dart';
+import '../../features/reference/weld_symbol_decoder_screen.dart';
+import '../../features/reference/motor_nameplate_decoder_screen.dart';
+import '../../features/reference/bearing_decoder_screen.dart';
+import '../../features/reference/coupling_tolerances_screen.dart';
+import '../../features/reference/crane_signals_screen.dart';
 import '../../features/welding/welding_hub_screen.dart';
 import '../../features/welding/welding_rod_screen.dart';
 import '../../features/welding/torch_flame_screen.dart';
@@ -41,6 +49,11 @@ import '../../features/rigging/rigging_hub_screen.dart';
 import '../../features/rigging/knots_screen.dart';
 import '../../features/rigging/sling_wll_screen.dart';
 import '../../features/rigging/load_calculator_screen.dart';
+import '../../features/safety/safety_hub_screen.dart';
+import '../../features/safety/loto_checklist_screen.dart';
+import '../../features/safety/hot_work_checklist_screen.dart';
+import '../../features/safety/confined_space_screen.dart';
+import '../../features/settings/settings_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/conversion',
@@ -48,6 +61,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/search',
       builder: (context, state) => const GlobalSearchScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
     ShellRoute(
       builder: (context, state, child) {
@@ -122,6 +139,18 @@ final appRouter = GoRouter(
               path: 'surface-area',
               builder: (context, state) => const SurfaceAreaCalculator(),
             ),
+            GoRoute(
+              path: 'electrical',
+              builder: (context, state) => const ElectricalCalculator(),
+            ),
+            GoRoute(
+              path: 'wire-sizing',
+              builder: (context, state) => const WireSizingCalculator(),
+            ),
+            GoRoute(
+              path: 'pneumatic',
+              builder: (context, state) => const PneumaticCalculator(),
+            ),
           ],
         ),
         GoRoute(
@@ -163,6 +192,26 @@ final appRouter = GoRouter(
             GoRoute(
               path: 'drill-tap',
               builder: (context, state) => const DrillTapScreen(),
+            ),
+            GoRoute(
+              path: 'weld-symbols',
+              builder: (context, state) => const WeldSymbolDecoderScreen(),
+            ),
+            GoRoute(
+              path: 'motor-nameplate',
+              builder: (context, state) => const MotorNameplateDecoderScreen(),
+            ),
+            GoRoute(
+              path: 'bearing-decoder',
+              builder: (context, state) => const BearingDecoderScreen(),
+            ),
+            GoRoute(
+              path: 'coupling-tolerances',
+              builder: (context, state) => const CouplingTolerancesScreen(),
+            ),
+            GoRoute(
+              path: 'crane-signals',
+              builder: (context, state) => const CraneSignalsScreen(),
             ),
           ],
         ),
@@ -222,6 +271,24 @@ final appRouter = GoRouter(
             ),
           ],
         ),
+        GoRoute(
+          path: '/safety',
+          builder: (context, state) => const SafetyHubScreen(),
+          routes: [
+            GoRoute(
+              path: 'loto',
+              builder: (context, state) => const LotoChecklistScreen(),
+            ),
+            GoRoute(
+              path: 'hot-work',
+              builder: (context, state) => const HotWorkChecklistScreen(),
+            ),
+            GoRoute(
+              path: 'confined-space',
+              builder: (context, state) => const ConfinedSpaceScreen(),
+            ),
+          ],
+        ),
       ],
     ),
   ],
@@ -234,15 +301,101 @@ class MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final selectedIndex = _calculateSelectedIndex(context);
+
+    // Use NavigationRail in landscape mode for better usability
+    if (isLandscape) {
+      return Scaffold(
+        body: Row(
+          children: [
+            NavigationRail(
+              selectedIndex: selectedIndex,
+              onDestinationSelected: (index) => _onItemTapped(index, context),
+              labelType: NavigationRailLabelType.all,
+              leading: Column(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    tooltip: 'Search',
+                    onPressed: () => context.push('/search'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    tooltip: 'Settings',
+                    onPressed: () => context.push('/settings'),
+                  ),
+                  const Divider(),
+                ],
+              ),
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.swap_horiz),
+                  selectedIcon: Icon(Icons.swap_horiz_outlined),
+                  label: Text('Convert'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.hardware),
+                  selectedIcon: Icon(Icons.hardware_outlined),
+                  label: Text('Fasteners'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.calculate),
+                  selectedIcon: Icon(Icons.calculate_outlined),
+                  label: Text('Calc'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.local_fire_department),
+                  selectedIcon: Icon(Icons.local_fire_department_outlined),
+                  label: Text('Welding'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.fitness_center),
+                  selectedIcon: Icon(Icons.fitness_center_outlined),
+                  label: Text('Rigging'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.health_and_safety),
+                  selectedIcon: Icon(Icons.health_and_safety_outlined),
+                  label: Text('Safety'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.menu_book),
+                  selectedIcon: Icon(Icons.menu_book_outlined),
+                  label: Text('Ref'),
+                ),
+              ],
+            ),
+            const VerticalDivider(thickness: 1, width: 1),
+            Expanded(child: child),
+          ],
+        ),
+      );
+    }
+
+    // Portrait mode uses bottom NavigationBar
     return Scaffold(
       body: child,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/search'),
-        tooltip: 'Search',
-        child: const Icon(Icons.search),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.small(
+            heroTag: 'settings',
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Settings',
+            child: const Icon(Icons.settings),
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton(
+            heroTag: 'search',
+            onPressed: () => context.push('/search'),
+            tooltip: 'Search',
+            child: const Icon(Icons.search),
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _calculateSelectedIndex(context),
+        selectedIndex: selectedIndex,
         onDestinationSelected: (index) => _onItemTapped(index, context),
         destinations: const [
           NavigationDestination(
@@ -271,6 +424,11 @@ class MainShell extends StatelessWidget {
             label: 'Rigging',
           ),
           NavigationDestination(
+            icon: Icon(Icons.health_and_safety),
+            selectedIcon: Icon(Icons.health_and_safety_outlined),
+            label: 'Safety',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.menu_book),
             selectedIcon: Icon(Icons.menu_book_outlined),
             label: 'Ref',
@@ -287,7 +445,8 @@ class MainShell extends StatelessWidget {
     if (location.startsWith('/calculators')) return 2;
     if (location.startsWith('/welding')) return 3;
     if (location.startsWith('/rigging')) return 4;
-    if (location.startsWith('/reference')) return 5;
+    if (location.startsWith('/safety')) return 5;
+    if (location.startsWith('/reference')) return 6;
     return 0;
   }
 
@@ -309,6 +468,9 @@ class MainShell extends StatelessWidget {
         context.go('/rigging');
         break;
       case 5:
+        context.go('/safety');
+        break;
+      case 6:
         context.go('/reference');
         break;
     }
