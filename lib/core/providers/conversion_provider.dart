@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/conversion_service.dart';
+import 'settings_provider.dart';
 
 // Length conversion state
 class LengthConversionState {
@@ -12,6 +13,22 @@ class LengthConversionState {
     this.fromUnit = LengthUnit.inches,
     this.toUnit = LengthUnit.millimeters,
   });
+
+  // Factory constructor for imperial defaults
+  factory LengthConversionState.imperial() {
+    return LengthConversionState(
+      fromUnit: LengthUnit.inches,
+      toUnit: LengthUnit.millimeters,
+    );
+  }
+
+  // Factory constructor for metric defaults
+  factory LengthConversionState.metric() {
+    return LengthConversionState(
+      fromUnit: LengthUnit.millimeters,
+      toUnit: LengthUnit.inches,
+    );
+  }
 
   double get result =>
       ConversionService.convertLength(inputValue, fromUnit, toUnit);
@@ -30,7 +47,10 @@ class LengthConversionState {
 }
 
 class LengthConversionNotifier extends StateNotifier<LengthConversionState> {
-  LengthConversionNotifier() : super(LengthConversionState());
+  LengthConversionNotifier(String defaultUnit)
+      : super(defaultUnit == 'metric'
+            ? LengthConversionState.metric()
+            : LengthConversionState.imperial());
 
   void setInputValue(double value) {
     state = state.copyWith(inputValue: value);
@@ -55,7 +75,8 @@ class LengthConversionNotifier extends StateNotifier<LengthConversionState> {
 final lengthConversionProvider =
     StateNotifierProvider<LengthConversionNotifier, LengthConversionState>(
         (ref) {
-  return LengthConversionNotifier();
+  final settings = ref.watch(settingsProvider);
+  return LengthConversionNotifier(settings.defaultUnit);
 });
 
 // Torque conversion state
@@ -69,6 +90,22 @@ class TorqueConversionState {
     this.fromUnit = TorqueUnit.footPounds,
     this.toUnit = TorqueUnit.newtonMeters,
   });
+
+  // Factory constructor for imperial defaults
+  factory TorqueConversionState.imperial() {
+    return TorqueConversionState(
+      fromUnit: TorqueUnit.footPounds,
+      toUnit: TorqueUnit.newtonMeters,
+    );
+  }
+
+  // Factory constructor for metric defaults
+  factory TorqueConversionState.metric() {
+    return TorqueConversionState(
+      fromUnit: TorqueUnit.newtonMeters,
+      toUnit: TorqueUnit.footPounds,
+    );
+  }
 
   double get result =>
       ConversionService.convertTorque(inputValue, fromUnit, toUnit);
@@ -87,7 +124,10 @@ class TorqueConversionState {
 }
 
 class TorqueConversionNotifier extends StateNotifier<TorqueConversionState> {
-  TorqueConversionNotifier() : super(TorqueConversionState());
+  TorqueConversionNotifier(String defaultUnit)
+      : super(defaultUnit == 'metric'
+            ? TorqueConversionState.metric()
+            : TorqueConversionState.imperial());
 
   void setInputValue(double value) {
     state = state.copyWith(inputValue: value);
@@ -112,7 +152,8 @@ class TorqueConversionNotifier extends StateNotifier<TorqueConversionState> {
 final torqueConversionProvider =
     StateNotifierProvider<TorqueConversionNotifier, TorqueConversionState>(
         (ref) {
-  return TorqueConversionNotifier();
+  final settings = ref.watch(settingsProvider);
+  return TorqueConversionNotifier(settings.defaultUnit);
 });
 
 // Temperature conversion state
@@ -126,6 +167,22 @@ class TemperatureConversionState {
     this.fromUnit = TemperatureUnit.fahrenheit,
     this.toUnit = TemperatureUnit.celsius,
   });
+
+  // Factory constructor for imperial defaults (Fahrenheit first)
+  factory TemperatureConversionState.imperial() {
+    return TemperatureConversionState(
+      fromUnit: TemperatureUnit.fahrenheit,
+      toUnit: TemperatureUnit.celsius,
+    );
+  }
+
+  // Factory constructor for metric defaults (Celsius first)
+  factory TemperatureConversionState.metric() {
+    return TemperatureConversionState(
+      fromUnit: TemperatureUnit.celsius,
+      toUnit: TemperatureUnit.fahrenheit,
+    );
+  }
 
   double get result =>
       ConversionService.convertTemperature(inputValue, fromUnit, toUnit);
@@ -145,7 +202,10 @@ class TemperatureConversionState {
 
 class TemperatureConversionNotifier
     extends StateNotifier<TemperatureConversionState> {
-  TemperatureConversionNotifier() : super(TemperatureConversionState());
+  TemperatureConversionNotifier(String defaultUnit)
+      : super(defaultUnit == 'metric'
+            ? TemperatureConversionState.metric()
+            : TemperatureConversionState.imperial());
 
   void setInputValue(double value) {
     state = state.copyWith(inputValue: value);
@@ -169,5 +229,6 @@ class TemperatureConversionNotifier
 
 final temperatureConversionProvider = StateNotifierProvider<
     TemperatureConversionNotifier, TemperatureConversionState>((ref) {
-  return TemperatureConversionNotifier();
+  final settings = ref.watch(settingsProvider);
+  return TemperatureConversionNotifier(settings.defaultUnit);
 });
